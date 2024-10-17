@@ -66,3 +66,26 @@ document.getElementById('btc-balance').innerText = btcBalance;
 document.getElementById('ltc-balance').innerText = ltcBalance;
 document.getElementById('xrp-balance').innerText = xrpBalance;
 
+// Открытие и закрытие модального окна
+
+// Получаем элементы модального окна и иконки
+const infoIcon = document.getElementById('info-icon');
+const infoModal = document.getElementById('info-modal');
+const closeButton = document.querySelector('.close-button');
+
+// Открытие модального окна при клике на иконку
+infoIcon.addEventListener('click', () => {
+    infoModal.style.display = 'block'; // Показываем модальное окно
+});
+
+// Закрытие модального окна при клике на кнопку закрытия
+closeButton.addEventListener('click', () => {
+    infoModal.style.display = 'none'; // Скрываем модальное окно
+});
+
+// Закрытие модального окна при клике вне области контента
+window.addEventListener('click', (event) => {
+    if (event.target === infoModal) {
+        infoModal.style.display = 'none'; // Скрываем модальное окно
+    }
+});
