@@ -135,8 +135,8 @@ body, html {
     }
 
     .coin-icon {
-        width: 80px; /* Уменьшаем размер иконок */
-        height: 80px;
+        width: 70px; /* Уменьшаем размер иконок */
+        height: 70px;
     }
 
     .menu-btn {
@@ -153,6 +153,59 @@ body, html {
     }
 }
 
-.my-icon {
+.my-icon, 
+.info-icon {
     animation: pulse 2s ease-in-out infinite;
+}
+
+.info-icon {
+    position: fixed;
+    top: 20px; /* Отступ сверху */
+    right: 20px; /* Отступ справа */
+    cursor: pointer; /* Указатель курсора при наведении */
+    z-index: 1000; /* Поверх других элементов */
+}
+
+.modal {
+    display: none; /* Скрыть по умолчанию */
+    position: fixed; /* Зафиксировано по экрану */
+    z-index: 1000; /* Поверх других элементов */
+    left: 0;
+    top: 0;
+    width: 100%; /* Полная ширина */
+    height: 100%; /* Полная высота */
+    background-color: rgba(0, 0, 0, 0.2); /* Прозрачный черный фон */
+}
+
+.modal-content {
+    background-color: #4444; /* ПРОЗРАЧНЫЙ */
+    margin: 15% auto; /* Отступы */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Ширина модального окна */
+    text-align: center; /* Центрирование текста */
+}
+
+.close-button {
+    color: #aaa; /* Цвет для кнопки закрытия */
+    float: right; /* Сдвинуть вправо */
+    font-size: 28px; /* Размер шрифта */
+    font-weight: bold; /* Жирный шрифт */
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black; /* Цвет при наведении */
+    text-decoration: none; /* Убрать подчеркивание */
+    cursor: pointer; /* Указатель курсора при наведении */
+}
+
+h1 {
+    font-size: 24px; /* Размер заголовка */
+    color: white; /* Цвет заголовка */
+}
+
+p {
+    font-size: 18px; /* Размер текста */
+    color: white; /* Цвет текста */
 }
