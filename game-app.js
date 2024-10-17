@@ -1,3 +1,4 @@
+let miningWorker; // Объявляем переменную для Web Worker
 function changeBackground(level = 1) {
     const currentHour = new Date().getHours();
     const backgroundElement = document.getElementById('background');
@@ -47,10 +48,16 @@ function startMining(initialTimeLeft = 3600) {
     const timerDisplay = document.getElementById('mining-timer');
     let timeLeft = initialTimeLeft;
     miningButton.disabled = true; // Деактивируем кнопку
-  
+
     // Сохраняем время начала майнинга
     const startTime = new Date().getTime();
     localStorage.setItem('miningStartTime', startTime);
+
+    // Создаем новый Worker
+    miningWorker = new Worker('miningWorker.js');
+
+    // Отправляем команду на запуск майнинга
+    miningWorker.postMessage({ command: 'start' });
 
     // Обновляем таймер каждую секунду
     const interval = setInterval(() => {
@@ -61,14 +68,27 @@ function startMining(initialTimeLeft = 3600) {
             miningButton.disabled = false; // Включаем кнопку обратно
             timerDisplay.innerText = "Start Mining";
             localStorage.removeItem('miningStartTime'); // Удаляем сохраненное время
+
+            // Останавливаем Worker
+            miningWorker.postMessage({ command: 'stop' });
+            miningWorker.terminate(); // Останавливаем Worker
+            miningWorker = null; // Освобождаем ресурс
         } else {
             timerDisplay.innerText = formatTime(timeLeft);
-            distributeCoins(); // Добавляем монеты
         }
     }, 1000);
 
     // Устанавливаем начальное значение таймера
     timerDisplay.innerText = formatTime(timeLeft);
+
+    // Обработчик сообщений от Worker
+    miningWorker.onmessage = function(event) {
+        const { coinType } = event.data;
+        const balanceElement = document.getElementById(`${coinType.toLowerCase()}-balance`);
+        const currentBalance = parseFloat(balanceElement.innerText) + 0.0001; // Увеличиваем баланс
+        balanceElement.innerText = currentBalance.toFixed(4); // Обновляем текст баланса
+        animateCoinAddition(coinType); // Запускаем анимацию
+    };
 }
 
 // Форматирование времени в MM:SS
@@ -76,25 +96,6 @@ function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
-}
-
-// Функция для распределения монет
-function distributeCoins() {
-    const coins = [
-        { type: 'BTC', chance: 0.01 },
-        { type: 'LTC', chance: 0.26 },
-        { type: 'XRP', chance: 0.73 },
-    ];
-
-    coins.forEach(coin => {
-        const randomValue = Math.random();
-        if (randomValue < coin.chance) {
-            const balanceElement = document.getElementById(`${coin.type.toLowerCase()}-balance`);
-            const currentBalance = parseFloat(balanceElement.innerText) + 0.0001; // Увеличиваем баланс
-            balanceElement.innerText = currentBalance.toFixed(4); // Обновляем текст баланса
-            animateCoinAddition(coin.type); // Запускаем анимацию
-        }
-    });
 }
 
 // Функция для анимации добавления монет
