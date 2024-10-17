@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alien Game</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="style.css">
@@ -41,6 +40,27 @@
     <i class="fas fa-arrow-left"></i> Назад
 </button>
 
+ <div id="info-icon" class="info-icon">
+    <i class="fas fa-info-circle" style="font-size: 24px; color: white;"></i>
+</div>
+
+<!-- Модальное окно -->
+<div id="info-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h1>Как работает майнинг?</h1>
+        <p>В игре предусмотрены три типа криптовалют. Вероятности майнинга каждой монеты разные как и их ценность.</p><p>Bitcoin (BTC) Вероятность начисления: 1%</p>
+<p>Litecoin (LTC)
+Вероятность начисления: 26%</p>
+<p>Ripple (XRP)
+Вероятность начисления: 73%</p>
+        <p>1. Запустите майнинг, нажав кнопку "Start Mining".</p>
+        <p>2. Монеты будут автоматически добавляться в ваш баланс каждую секунду.</p>
+        <p>3. Майнинг продолжится в течение 60 минут, даже если вы покинете страницу.</p>
+        <p>Вернитесь на главную страницу, чтобы увидеть свои накопленные монеты.</p>
+    </div>
+</div>
+  
     <script src="script.js"></script>
 </body>
 </html>
