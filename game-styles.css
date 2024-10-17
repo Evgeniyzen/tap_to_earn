@@ -116,15 +116,15 @@ body, html {
     overflow: hidden; /* Чтобы текст не выходил за пределы */
 }
 
-/* Иконка поделиться */
+/* Иконки */
 .my-icon {
     background: none;
     position: fixed;
     top: 10px;
     left: 10px;
     font-size: 30px;
-    color: white;
     cursor: pointer;
+    color: white; /* Цвет текста */
 }
 /* Для мобильных устройств с шириной экрана до 600px */
 @media (max-width: 600px) {
@@ -136,7 +136,7 @@ body, html {
 
     .coin-icon {
         width: 70px; /* Уменьшаем размер иконок */
-        height: 70px;
+        height: 70px
     }
 
     .menu-btn {
@@ -153,8 +153,7 @@ body, html {
     }
 }
 
-.my-icon, 
-.info-icon {
+.my-icon {
     animation: pulse 2s ease-in-out infinite;
 }
 
@@ -164,6 +163,8 @@ body, html {
     right: 20px; /* Отступ справа */
     cursor: pointer; /* Указатель курсора при наведении */
     z-index: 1000; /* Поверх других элементов */
+    color: white; /* Цвет текста */
+    margin-left: 5px; /* Немного отступа между иконкой и текстом */
 }
 
 .modal {
@@ -203,9 +204,42 @@ body, html {
 h1 {
     font-size: 24px; /* Размер заголовка */
     color: white; /* Цвет заголовка */
+    text-shadow: 2px 2px 5px #8a2be2; /* Ярко-фиолетовая тень */
+    overflow: hidden; /* Обрезаем текст за пределами блока */
+    border-right: .15em solid #8a2be2; /* Курсор для эффекта печатания */
+    white-space: nowrap; /* Запрещаем переносы строк */
+    letter-spacing: .15em; /* Пространство между буквами */
+    animation: typing 3.5s steps(30, end), blink-caret .75s step-end infinite;
 }
+
+/* Анимация эффекта печатания */
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+}
+
+/* Анимация мигания курсора */
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: #8a2be2; }
+}
+
 
 p {
     font-size: 18px; /* Размер текста */
     color: white; /* Цвет текста */
+    opacity: 0; /* Изначально скрыт */
+    animation: fadeIn 1.5s ease-in-out forwards; /* Анимация плавного появления */
+    animation-delay: 1.5s; /* Задержка 1.5 секунды */
 }
+
+/* Анимация для плавного появления */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
