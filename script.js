@@ -10,46 +10,65 @@ function changeBackground(level = 1) {
         nightBackground = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_wyHa3pGPRrlFNaG7DrprrmU564ONyVmd6Q&s";
     }
 
-    backgroundElement.style.backgroundImage = (currentHour >= 9 && currentHour < 19) ? 
-        `url(${dayBackground})` : `url(${nightBackground})`;
+    if (currentHour >= 9 && currentHour < 19) {
+        backgroundElement.style.backgroundImage = `url(${dayBackground})`;
+    } else {
+        backgroundElement.style.backgroundImage = `url(${nightBackground})`;
+    }
 }
 
 // Запуск смены фона при загрузке
 window.onload = function() {
     changeBackground();
     loadBalances(); // Загружаем сохраненные балансы
+
+    // Проверка на активный майнинг
+    const miningStartTime = localStorage.getItem('miningStartTime');
+    const miningDuration = 3600; // Длительность майнинга в секундах
+    if (miningStartTime) {
+        const startTime = parseInt(miningStartTime);
+        const elapsedTime = Math.floor((new Date().getTime() - startTime) / 1000);
+        const timeLeft = miningDuration - elapsedTime; // Остаток времени
+
+        if (timeLeft > 0) {
+            startMining(timeLeft); // Если есть сохраненное время, запускаем майнинг
+        }
+    }
 };
 
 // Устанавливаем начальные значения для балансов
-function loadBalances() {
-    document.getElementById('btc-balance').innerText = localStorage.getItem('btcBalance') || '0.0000';
-    document.getElementById('ltc-balance').innerText = localStorage.getItem('ltcBalance') || '0.0000';
-    document.getElementById('xrp-balance').innerText = localStorage.getItem('xrpBalance') || '0.0000';
-}
+document.getElementById('btc-balance').innerText = '0.0000';
+document.getElementById('ltc-balance').innerText = '0.0000';
+document.getElementById('xrp-balance').innerText = '0.0000';
 
-function startMining() {
+// Функция для запуска майнинга
+function startMining(initialTimeLeft = 3600) {
     const miningButton = document.getElementById('start-mining-btn');
     const timerDisplay = document.getElementById('mining-timer');
-    let timeLeft = 3600; // 1 час в секундах
+    let timeLeft = initialTimeLeft;
     miningButton.disabled = true; // Деактивируем кнопку
+  
+    // Сохраняем время начала майнинга
+    const startTime = new Date().getTime();
+    localStorage.setItem('miningStartTime', startTime);
 
+    // Обновляем таймер каждую секунду
     const interval = setInterval(() => {
-        timeLeft--;
-        timerDisplay.innerText = formatTime(timeLeft);
-        
-        // Добавляем монеты каждую секунду
-        distributeCoins();
-
-        // Сохраняем оставшееся время в localStorage
-        localStorage.setItem('timeLeft', timeLeft);
+        timeLeft--; // Уменьшаем оставшееся время
 
         if (timeLeft <= 0) {
             clearInterval(interval);
             miningButton.disabled = false; // Включаем кнопку обратно
             timerDisplay.innerText = "Start Mining";
-            localStorage.removeItem('timeLeft'); // Удаляем сохраненное время
+            localStorage.removeItem('miningStartTime'); // Удаляем сохраненное время
+        } else {
+            timerDisplay.innerText = formatTime(timeLeft);
+            distributeCoins(); // Добавляем монеты
         }
     }, 1000);
+
+    // Устанавливаем начальное значение таймера
+    timerDisplay.innerText = formatTime(timeLeft);
 }
 
 // Форматирование времени в MM:SS
@@ -73,10 +92,6 @@ function distributeCoins() {
             const balanceElement = document.getElementById(`${coin.type.toLowerCase()}-balance`);
             const currentBalance = parseFloat(balanceElement.innerText) + 0.0001; // Увеличиваем баланс
             balanceElement.innerText = currentBalance.toFixed(4); // Обновляем текст баланса
-            
-            // Сохраняем обновленный баланс в localStorage
-            localStorage.setItem(`${coin.type.toLowerCase()}Balance`, currentBalance);
-            
             animateCoinAddition(coin.type); // Запускаем анимацию
         }
     });
@@ -116,7 +131,7 @@ function animateCoinAddition(coinType) {
     setTimeout(() => {
         coinElement.remove();
     }, 2000);
-    
+
     // Дополнительная анимация увеличения и уменьшения картинки монеты
     const coinIcon = document.getElementById(`${coinType.toLowerCase()}-icon`);
     coinIcon.style.transition = 'transform 0.5s ease';
@@ -128,9 +143,20 @@ function animateCoinAddition(coinType) {
     }, 500);
 }
 
-// Обработка кнопки "Назад"
+// Функция для загрузки сохраненных балансов
+function loadBalances() {
+    const btcBalance = localStorage.getItem('btcBalance') || '0.0000';
+    const ltcBalance = localStorage.getItem('ltcBalance') || '0.0000';
+    const xrpBalance = localStorage.getItem('xrpBalance') || '0.0000';
+
+    document.getElementById('btc-balance').innerText = btcBalance;
+    document.getElementById('ltc-balance').innerText = ltcBalance;
+    document.getElementById('xrp-balance').innerText = xrpBalance;
+}
+
+// Обработчик для кнопки "Назад"
 document.getElementById('back-btn').addEventListener('click', function() {
-    // Сохраняем балансы перед переходом на главную страницу
+    // Сохранение балансов в localStorage перед переходом
     localStorage.setItem('btcBalance', document.getElementById('btc-balance').innerText);
     localStorage.setItem('ltcBalance', document.getElementById('ltc-balance').innerText);
     localStorage.setItem('xrpBalance', document.getElementById('xrp-balance').innerText);
@@ -139,14 +165,24 @@ document.getElementById('back-btn').addEventListener('click', function() {
     window.location.href = 'index.html';
 });
 
-// Проверка состояния при загрузке страницы
-window.onload = function() {
-    changeBackground();
-    loadBalances(); // Загружаем сохраненные балансы
-    
-    // Проверка на активный майнинг
-    const savedTimeLeft = localStorage.getItem('timeLeft');
-    if (savedTimeLeft) {
-        startMining(); // Если есть сохраненное время, запускаем майнинг
+// Получаем элементы модального окна и иконки
+const infoIcon = document.getElementById('info-icon');
+const infoModal = document.getElementById('info-modal');
+const closeButton = document.querySelector('.close-button');
+
+// Открытие модального окна при клике на иконку
+infoIcon.addEventListener('click', () => {
+    infoModal.style.display = 'block'; // Показываем модальное окно
+});
+
+// Закрытие модального окна при клике на кнопку закрытия
+closeButton.addEventListener('click', () => {
+    infoModal.style.display = 'none'; // Скрываем модальное окно
+});
+
+// Закрытие модального окна при клике вне области контента
+window.addEventListener('click', (event) => {
+    if (event.target === infoModal) {
+        infoModal.style.display = 'none'; // Скрываем модальное окно
     }
-};
+});
