@@ -1,0 +1,158 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+}
+
+.game-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+#background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+}
+
+.bottom-menu {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 10px;
+}
+
+.menu-btn {
+    flex: 1;
+    color: white;
+    background: none;
+    border: none;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.menu-btn i {
+    display: block;
+    font-size: 24px; /* Размер иконки */
+    margin-bottom: 5px; /* Отступ между иконкой и текстом */
+}
+
+.menu-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* - - - - - БАЛАНСЫ - - - - - */
+.coins-container {
+    position: absolute;
+    top: 0%; /* Настраиваем позицию контейнера с монетами */
+    left: 50%;
+    transform: translateX(-50%); /* Центрируем по горизонтали */
+    display: flex;
+    justify-content: space-around;
+    width: 80%; /* Ширина контейнера */
+}
+
+.coin {
+    text-align: center;
+    animation: float 3s ease-in-out infinite; /* Анимация по умолчанию */
+}
+
+.coin-icon {
+    width: 250px; /* Размер иконок монет */
+    height: 250px;
+}
+
+.balance {
+    font-size: 28px; /* Размер текста с балансом */
+    color: white; /* Цвет текста */
+    margin-top: 10px; /* Отступ сверху */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); /* Добавляем тень */
+}
+
+/* Анимация для эффекта парения */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px); /* Высота подъема */
+    }
+}
+
+.animated-coin {
+    font-size: 30px; /* Размер текста монеты */
+    color: gold; /* Цвет текста */
+    opacity: 0; /* Начальная прозрачность */
+    pointer-events: none; /* Игнорируем события мыши */
+    transition: transform 1s ease-out, opacity 1s ease-out; /* Анимация */
+    position: absolute;
+}
+/* Стиль для основной рабочей области */
+#main {
+    position: relative;
+    width: 80%; /* Настраиваем ширину */
+    height: 60%; /* Настраиваем высоту */
+    margin: 0 auto; /* Центрируем */
+    top: 20%; /* Позиционирование от верхнего края */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Чтобы текст не выходил за пределы */
+}
+
+/* Иконка поделиться */
+.my-icon {
+    background: none;
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+}
+/* Для мобильных устройств с шириной экрана до 600px */
+@media (max-width: 600px) {
+    .coins-container {
+        width: 90%; /* Уменьшение ширины для мобильных */
+        flex-direction: column; /* Размещаем монеты по вертикали */
+        align-items: center;
+    }
+
+    .coin-icon {
+        width: 80px; /* Уменьшаем размер иконок */
+        height: 80px;
+    }
+
+    .menu-btn {
+        font-size: 14px; /* Уменьшаем шрифт для мобильных */
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.my-icon {
+    animation: pulse 2s ease-in-out infinite;
+}

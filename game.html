@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alien Game</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div id="background"></div>
+
+        <!-- Контейнер для основного контента -->
+      
+        <div id="main">
+            <div class="coins-container">
+                <div class="coin">
+                    <img src="https://cdn3d.iconscout.com/3d/premium/thumb/bitcoin-3d-icon-download-in-png-blend-fbx-gltf-file-formats--sign-symbol-logo-crypto-pack-cryptocurrency-icons-3297151.png?f=webp" alt="BTC" class="coin-icon" id="btc-icon">
+                    <div class="balance" id="btc-balance">0.0000</div>
+                </div>
+                <div class="coin">
+                    <img src="https://cdn3d.iconscout.com/3d/premium/thumb/litecoin-3d-icon-download-in-png-blend-fbx-gltf-file-formats--bitcoin-logo-symbol-sign-crypto-pack-cryptocurrency-icons-3297149.png?f=webp" alt="LTC" class="coin-icon" id="ltc-icon">
+                    <div class="balance" id="ltc-balance">0.0000</div>
+                </div>
+                <div class="coin">
+                    <img src="https://cdn3d.iconscout.com/3d/premium/thumb/xrp-coin-3d-icon-download-in-png-blend-fbx-gltf-file-formats--bitcoin-logo-symbol-sign-crypto-pack-cryptocurrency-icons-3297150.png?f=webp" alt="XRP" class="coin-icon" id="xrp-icon">
+                    <div class="balance" id="xrp-balance">0.0000</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Меню и другие элементы -->
+        <div class="bottom-menu">
+            <button class="menu-btn" id="start-mining-btn" onclick="startMining()"><i class="fas fa-play"></i><span id="mining-timer">Start Mining</span></button>
+        </div>
+    </div>
+
+<button class="my-icon" id="back-btn" onclick="goBack()">
+    <i class="fas fa-arrow-left"></i> Назад
+</button>
+
+    <script src="script.js"></script>
+</body>
+</html>
